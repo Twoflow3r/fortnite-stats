@@ -15,12 +15,13 @@ class App extends Component {
       result: [],
       searchQuery: DEFAULT_QUERY,
       uid: "",
-      value: "",
+      selectValue: 0,
       stats: 0,
       totals: 0
     };
    
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeSelect = this.handleChangeSelect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
 
@@ -33,6 +34,12 @@ class App extends Component {
   handleChange(event) {
     this.setState({
       searchQuery: event.target.value
+    });
+  }
+
+  handleChangeSelect(event) {
+    this.setState({
+      selectValue: event.target.value
     });
   }
 
@@ -85,7 +92,7 @@ class App extends Component {
     const {
       uid
     } = this.state;
-    fetch(`${PATH_BASE}${PATH_USER_DATA}${uid}${PLATPHORM_USER[0]}`)
+    fetch(`${PATH_BASE}${PATH_USER_DATA}${uid}${PLATPHORM_USER[this.state.selectValue]}`)
       .then(response => response.json())
       .then(result => this.setSearchPlayerStatsFull(result))
       .catch(error => error);
@@ -101,18 +108,23 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-         Fortnite Stats
+         <h1>Fortnite Stats</h1>
          <form onSubmit={this.handleSubmit}>
         <label>
           Имя:
-          <input type="text" value={this.state.searchQuery} onChange={this.handleChange} />
+          <input type="text" placeholder="ninja" value={this.state.searchQuery} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Отправить" />
+        <label>
+          Платформа:
+        <select  value={this.state.selectValue} onChange={this.handleChangeSelect}>
+        <option value="0">ПК</option>
+        <option value="1">ПС 4</option>
+        </select>
+        </label>
+        <input className="btn" type="submit" value="Отправить" />
       </form>
-       <span>
-        {this.state.result.username}
-        </span>
-        <span>{this.state.result.uid}</span>
+      <span> Имя пользователя : {this.state.result.username}</span>
+       <span>Индефекатор : {this.state.result.uid}</span>
       <Statistic stats = {stats} />
 
         </header>

@@ -13,16 +13,46 @@
   color: white;
 }
 
-
-p,span {
-
-  animation: opacity-p  2s linear;
+p,
+span,
+h1,
+form {
+  animation: fade-in-black 2s ease-in;
 }
-@keyframes opacity-p {
+form {
+  display: flex;
+    flex-direction: column;
+    align-items: center;;
+    width: 320px;
+    
+}
+label {
+  font-size: 14px;
+}
+
+input,
+select {
+  padding: 1rem;
+  margin: 1rem;
+  border: none;
+  width: 280px;
+  cursor: pointer;
+}
+input:first-child {
+  width: 250px;
+}
+@keyframes fade-in-black {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
   }
+}
+.btn {
+  background-color: #007bff;
+  transition: 1s;
+}
+.btn:hover {
+  background-color: #6ca3ff;
 }
