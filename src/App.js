@@ -3,8 +3,16 @@ import './App.css';
 
 import {PATH_BASE,PATH_TYPE,PATH_USER_DATA,PLATPHORM_USER,DEFAULT_QUERY} from "./constants/";
 import Statistic from "./stats/";
+import Error from "./error/";
 
-
+const ContentBlock = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "start",
+  width: "290px",
+  fontSize: "14px",
+  textAlign: "left"
+}
 
 class App extends Component {
   
@@ -89,43 +97,43 @@ class App extends Component {
   }
   
   render() {  
-    const {stats, totals,error  } = this.state;
+    const {stats, totals, error  } = this.state;
+    const { errorMessage, numericErrorCode } = this.state.result;
     console.log(this.state);
     //console.log(this.state.result);
     //console.log(this.state.stats);
     console.log(this.state.error);
 
-    
-
     return (
       <div className="App">
-        <header className="App-header">
+        <main className="App-main">
          <h1>Fortnite Stats</h1>
-         <form onSubmit={this.handleSubmit}>
-        <label>
-          Имя:
-          <input type="text" required placeholder="ninja" value={this.state.searchQuery} onChange={this.handleChange} />
-        </label>
-        <label>
-          Платформа:
-        <select  value={this.state.selectValue} onChange={this.handleChangeSelect}>
-        <option value="0">ПК</option>
-        <option value="1">ПС 4</option>
-        </select>
-        </label>
-        <input className="btn" type="submit" value="Отправить" />
-      </form>
+            <form onSubmit={this.handleSubmit}>
+            <label>
+            Имя:
+            <input type="text" required placeholder="ninja" value={this.state.searchQuery} onChange={this.handleChange} />
+            </label>
+            <label>
+            Платформа:
+            <select  value={this.state.selectValue} onChange={this.handleChangeSelect}>
+            <option value="0">ПК</option>
+            <option value="1">ПС 4</option>
+            </select>
+            </label>
+            <input className="btn" type="submit" value="Отправить" />
+            </form>
+            <div style={ContentBlock}>
       {
-        error ? <div className = "interactions">
-         <p> Произошла ошибка получения данных. </p>
-         <p>{this.state.result.errorMessage}</p> 
-         <p>{this.state.result.numericErrorCode}</p> 
-         <p>Видимо такого пользователя с заданным именем нет, либо он использует другую игровую платформу</p> 
-         </div>
-          : <Statistic stats = {stats} />
+        error ? <Error
+          errorMessage = {errorMessage}
+          numericErrorCode = {numericErrorCode}
+           />
+          : <Statistic 
+          stats = {stats} 
+          />
         }
-      
-        </header>
+        </div>
+        </main>
       </div>
     );
   }
