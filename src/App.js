@@ -17,13 +17,13 @@ class App extends Component {
       uid: "",
       selectValue: 0,
       stats: 0,
-      totals: 0
+      totals: 0,
+      error: null
     };
    
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeSelect = this.handleChangeSelect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
 
     this.setSearchPlayerStatsFull = this.setSearchPlayerStatsFull.bind(this);
     this.fetchSearchPlayer = this.fetchSearchPlayer.bind(this); 
@@ -36,6 +36,7 @@ class App extends Component {
       searchQuery: event.target.value
     });
   }
+    
 
   handleChangeSelect(event) {
     this.setState({
@@ -53,58 +54,49 @@ class App extends Component {
 
   setSearchPlayerStats(uid) {
     this.setState({
-      uid
+       uid
     });
   }
 
-  setSearchPlayerStatsFull(result) {
-    this.setState({
-      result
-    });
-    const {
-      stats
-    } = this.state.result;
-    const {
-      totals
-    } = this.state.result;
-    this.setState({
-      stats,
-      totals
-    });
+  setSearchPlayerStatsFull(result) { 
+    this.setState({ result });
 
+    const { stats, totals,error} = this.state.result;
+
+    this.setState({ stats, totals, error
+    });
   }
-
+  
 
   fetchSearchPlayerUid() {
-    const {
-      searchQuery
-    } = this.state;
+    const { searchQuery } = this.state;
 
     fetch(`${PATH_BASE}${PATH_TYPE}${searchQuery}`)
       .then(response => response.json())
       .then(response => response.uid)
       .then(uid => this.setSearchPlayerStats(uid))
-      .then(result => this.fetchSearchPlayer())
-      .catch(error => error);
+      .then(result => this.fetchSearchPlayer(result))
+      .catch(error => this.setState({ error }));
   }
 
   fetchSearchPlayer() {
-    const {
-      uid
-    } = this.state;
+    const { uid } = this.state;
     fetch(`${PATH_BASE}${PATH_USER_DATA}${uid}${PLATPHORM_USER[this.state.selectValue]}`)
       .then(response => response.json())
       .then(result => this.setSearchPlayerStatsFull(result))
-      .catch(error => error);
+      .catch(error => this.setState({ error }))
     console.log(this.state);
   }
   
   render() {  
-    const {stats, totals } = this.state;
+    const {stats, totals,error  } = this.state;
     console.log(this.state);
-    console.log(this.state.result);
-    console.log(this.state.stats);
-    console.log(this.state.totals);
+    //console.log(this.state.result);
+    //console.log(this.state.stats);
+    console.log(this.state.error);
+
+    
+
     return (
       <div className="App">
         <header className="App-header">
@@ -112,7 +104,7 @@ class App extends Component {
          <form onSubmit={this.handleSubmit}>
         <label>
           Имя:
-          <input type="text" placeholder="ninja" value={this.state.searchQuery} onChange={this.handleChange} />
+          <input type="text" required placeholder="ninja" value={this.state.searchQuery} onChange={this.handleChange} />
         </label>
         <label>
           Платформа:
@@ -123,10 +115,16 @@ class App extends Component {
         </label>
         <input className="btn" type="submit" value="Отправить" />
       </form>
-      <span> Имя пользователя : {this.state.result.username}</span>
-       <span>Индефекатор : {this.state.result.uid}</span>
-      <Statistic stats = {stats} />
-
+      {
+        error ? <div className = "interactions">
+         <p> Произошла ошибка получения данных. </p>
+         <p>{this.state.result.errorMessage}</p> 
+         <p>{this.state.result.numericErrorCode}</p> 
+         <p>Видимо такого пользователя с заданным именем нет, либо он использует другую игровую платформу</p> 
+         </div>
+          : <Statistic stats = {stats} />
+        }
+      
         </header>
       </div>
     );

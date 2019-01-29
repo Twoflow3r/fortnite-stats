@@ -15,10 +15,15 @@ function Instruction() {
     </>
     );
 }
-
+const StatsList = {
+    display: "flex",
+      flexDirection: "column",
+      alignItems: "start"
+}
 function ListStats({stats}){
   return (
     <>
+    <div style={StatsList}>
     <span>Убийств в одиночку : {stats.kills_solo} </span>
     <span>Убийств в паре : {stats.kills_duo} </span>
     <span>Убийств в команде : {stats.kills_squad} </span>
@@ -28,6 +33,7 @@ function ListStats({stats}){
     <span>Побед соло : {stats.placetop1_solo} </span>
     <span>Побед в паре : {stats.placetop1_duo} </span>
     <span> Побед в команде :{stats.placetop1_squad} </span>
+    </div>
     </>
     );
 }
