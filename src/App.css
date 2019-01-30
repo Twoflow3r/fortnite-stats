@@ -51,9 +51,15 @@ input:first-child {
   }
 }
 .btn {
-  background-color: #007bff;
+  background-color: #00d8ff;
   transition: 1s;
 }
 .btn:hover {
   background-color: #6ca3ff;
 }
+
+.rwt__tab {
+  color: #fff;
+  padding: 0.8rem 1rem !important;
+}
+

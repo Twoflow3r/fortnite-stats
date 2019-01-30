@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 
 import {PATH_BASE,PATH_TYPE,PATH_USER_DATA,PLATPHORM_USER,DEFAULT_QUERY} from "./constants/";
-import Statistic from "./stats/";
+//import Statistic from "./stats/";
 import Error from "./error/";
+import Total from "./totals/";
+import Solo from "./solo/";
+import Duo from "./duo/";
+import Group from "./group/";
+import {ContentBlock} from "./style/";
 
-const ContentBlock = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "start",
-  width: "290px",
-  fontSize: "14px",
-  textAlign: "left"
-}
+import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs';
+import 'react-web-tabs/dist/react-web-tabs.css';
+
 
 class App extends Component {
   
@@ -20,7 +20,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      result: [],
+      result: "",
       searchQuery: DEFAULT_QUERY,
       uid: "",
       selectValue: 0,
@@ -97,12 +97,9 @@ class App extends Component {
   }
   
   render() {  
-    const {stats, totals, error  } = this.state;
+    const {stats, totals, error , result } = this.state;
     const { errorMessage, numericErrorCode } = this.state.result;
     console.log(this.state);
-    //console.log(this.state.result);
-    //console.log(this.state.stats);
-    console.log(this.state.error);
 
     return (
       <div className="App">
@@ -122,18 +119,49 @@ class App extends Component {
             </label>
             <input className="btn" type="submit" value="Отправить" />
             </form>
+            
             <div style={ContentBlock}>
       {
         error ? <Error
           errorMessage = {errorMessage}
           numericErrorCode = {numericErrorCode}
-           />
-          : <Statistic 
-          stats = {stats} 
-          />
+           />  
+           : <Tabs
+           defaultTab="one"
+           onChange={(tabId) => { console.log(tabId) }}
+         >
+           <TabList>
+             <Tab tabFor="one">Общее</Tab>
+             <Tab tabFor="two"> Соло</Tab>
+             <Tab tabFor="three">Дуо</Tab>
+             <Tab tabFor="four">Группа</Tab>
+           </TabList>
+           <TabPanel tabId="one">
+           <Total 
+             result = {result}
+             totals = {totals}
+             />
+           </TabPanel>
+           <TabPanel tabId="two">
+           <Solo 
+             stats = {stats} 
+             />
+           </TabPanel>
+           <TabPanel tabId="three">
+           <Duo 
+             stats = {stats} 
+             />
+           </TabPanel>
+           <TabPanel tabId="four">
+           <Group 
+             stats = {stats} 
+             />
+           </TabPanel>
+         </Tabs>
         }
         </div>
         </main>
+      
       </div>
     );
   }
