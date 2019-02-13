@@ -93,13 +93,11 @@ class App extends Component {
       .then(response => response.json())
       .then(result => this.setSearchPlayerStatsFull(result))
       .catch(error => this.setState({ error }))
-    console.log(this.state);
   }
   
   render() {  
     const {stats, totals, error , result } = this.state;
     const { errorMessage, numericErrorCode } = this.state.result;
-    console.log(this.state);
 
     return (
       <div className="App">

@@ -63,3 +63,30 @@ input:first-child {
   padding: 0.8rem 1rem !important;
 }
 
+
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+  width: 920px;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.card {
+  flex: 25%;
+  display: inline-block;
+  margin-top: calc( ( 100vh - 506px ) / 2 );
+  margin-right: 15px;
+  margin-left: 15px;
+  background: #FFFFFF;
+  min-width: 270px;
+  border: 1px solid #222;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,.05);
+}
+.card img {
+  width: 120px;
+  height: auto;
+}
+
